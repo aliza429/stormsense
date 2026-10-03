@@ -16,8 +16,9 @@ st.caption("Predicting storms, explaining why. Educational prototype, "
            "not an official weather warning.")
 
 LOG = "log.csv"
-COLORS = {"Low": "#2e9e5b", "Medium": "#f0a500", "High": "#d64545"}
-
+                {"range": [0, 30], "color": "#14352a"},
+                {"range": [30, 70], "color": "#3a2f10"},
+                {"range": [70, 100], "color": "#3d1a1a"},
 
 def gauge(prob, level):
     fig = go.Figure(go.Indicator(
@@ -41,14 +42,19 @@ def gauge(prob, level):
 def shap_chart(contrib, top=8):
     s = contrib.reindex(contrib.abs().sort_values(ascending=False).head(top).index)
     s = s.iloc[::-1]
+    bg, fg = "#0b1220", "#e8eefc"
     fig, ax = plt.subplots(figsize=(6, 4))
+    fig.patch.set_facecolor(bg)
+    ax.set_facecolor(bg)
     ax.barh([FRIENDLY[i] for i in s.index], s.values,
-            color=["#d64545" if v > 0 else "#3b7dd8" for v in s.values])
-    ax.axvline(0, color="grey", lw=0.8)
-    ax.set_xlabel("Pushes risk down  <  0  >  pushes risk up")
+            color=["#ff6b6b" if v > 0 else "#5aa9ff" for v in s.values])
+    ax.axvline(0, color="#8a96b0", lw=0.8)
+    ax.tick_params(colors=fg)
+    ax.set_xlabel("Pushes risk down  <  0  >  pushes risk up", color=fg)
+    for sp in ax.spines.values():
+        sp.set_color("#3a4660")
     fig.tight_layout()
     return fig
-
 
 def log_check(res):
     row = pd.DataFrame([{

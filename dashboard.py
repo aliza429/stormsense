@@ -22,7 +22,7 @@ def load_recent(city):
 
 def trend_chart(df, col, title, fixed_range=None, zero=False):
     fig = go.Figure(go.Scatter(x=df.index, y=df[col], mode="lines",
-                               line=dict(color="#3b7dd8")))
+                               line=dict(color="#5aa9ff")))
     fig.update_layout(height=260, margin=dict(l=10, r=10, t=40, b=10),
                       title=title)
     if fixed_range:
@@ -76,7 +76,7 @@ def render_dashboard():
         z=cm, x=["Predicted: no storm", "Predicted: storm"],
         y=["Actual: no storm", "Actual: storm"],
         text=[[f"{v:,}" for v in row] for row in cm],
-        texttemplate="%{text}", colorscale="Blues", showscale=False))
+        texttemplate="%{text}", colorscale=[[0, "#16233d"], [1, "#4f8fe0"]], showscale=False))
     fig.update_layout(height=320, margin=dict(l=10, r=10, t=30, b=10),
                       yaxis_autorange="reversed", title="Confusion matrix")
     st.plotly_chart(fig, width="stretch")
@@ -86,7 +86,7 @@ def render_dashboard():
     imp = pd.Series(bundle["model"].feature_importances_,
                     index=[FRIENDLY[f] for f in bundle["features"]]).sort_values()
     fig2 = go.Figure(go.Bar(x=imp.values, y=imp.index, orientation="h",
-                            marker_color="#3b7dd8"))
+                            marker_color="#5aa9ff"))
     fig2.update_layout(height=380, margin=dict(l=10, r=10, t=10, b=10),
                        xaxis_title="Importance")
     st.plotly_chart(fig2, width="stretch")
