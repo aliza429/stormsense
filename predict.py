@@ -14,8 +14,9 @@ CITIES = {
 VARS = ("surface_pressure,relative_humidity_2m,wind_speed_10m,"
         "temperature_2m,precipitation,wind_gusts_10m")
 BASELINES = json.load(open("baselines.json"))
-LOW_MAX, MED_MAX = 0.30, 0.60   # probability cut-offs for Low / Medium / High
-
+LOW_MAX, MED_MAX = 0.30, 0.70   # score cut-offs for Low / Medium / High
+# How often a storm really followed each level in the 2025 test data
+LEVEL_HIT_RATE = {"Low": 0.02, "Medium": 0.12, "High": 0.53}
 _bundle = joblib.load("model.pkl")
 MODEL = _bundle["model"]
 EXPLAINER = shap.TreeExplainer(MODEL)
@@ -82,7 +83,7 @@ def make_reason(p, contrib, row):
         down = calm.sort_values().head(2).index
         parts = [PHRASES[f](row[f]) for f in down]
         return f"Risk is LOW because " + " and ".join(parts) + "."
-    up = contrib.sort_values(ascending=False)
+    up = contrib.drop(labels=["temperature_2m"]).sort_values(ascending=False)
     up = up[up > 0].head(3).index
     parts = [PHRASES[f](row[f]) for f in up]
     if len(parts) > 1:

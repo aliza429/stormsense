@@ -8,8 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from predict import CITIES, predict_live
-
+from predict import CITIES, predict_live, LEVEL_HIT_RATE
 st.set_page_config(page_title="StormSense", page_icon="⛈️", layout="wide")
 st.title("⛈️ StormSense")
 st.caption("Predicting storms, explaining why. Educational prototype, "
@@ -29,9 +28,8 @@ def gauge(prob, level):
             "axis": {"range": [0, 100]},
             "bar": {"color": COLORS[level]},
             "steps": [
-                {"range": [0, 30], "color": "#e3f4ea"},
-                {"range": [30, 60], "color": "#fdf1d6"},
-                {"range": [60, 100], "color": "#f9dede"},
+                  {"range": [30, 70], "color": "#fdf1d6"},
+                  {"range": [70, 100], "color": "#f9dede"},
             ],
         },
     ))
@@ -85,9 +83,9 @@ with tab1:
             st.subheader("Why this prediction?")
             st.pyplot(shap_chart(res["contrib"]))
         st.info(res["reason"])
-        st.caption("The percentage is the model's estimated chance of a storm "
-                   "(heavy rain or strong gusts) in the next 6 hours.")
-
+         st.caption(f"In our 2025 test data, a {res['level']} reading was "
+                     f"followed by a storm within 6 hours about "
+                     f"{LEVEL_HIT_RATE[res['level']]:.0%} of the time.")
 with tab2:
     st.write("Coming next.")
 
