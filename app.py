@@ -1,3 +1,4 @@
+from whatif import render_whatif
 import os
 from datetime import datetime
 from dashboard import render_dashboard
@@ -91,7 +92,6 @@ with tab1:
                    f"{LEVEL_HIT_RATE[res['level']]:.0%} of the time.")
 
 with tab2:
-    st.write("Coming next.")
-
+      render_whatif(gauge, shap_chart)
 with tab3:
     render_dashboard()
