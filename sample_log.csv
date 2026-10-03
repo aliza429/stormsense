@@ -1,0 +1,13 @@
+checked_at,city,risk,probability
+2026-10-02 15:52:55,Mangaluru,Low,0.163
+2026-10-02 15:53:09,Bengaluru,Low,0.094
+2026-10-02 15:53:25,Mangaluru,Low,0.163
+2026-10-02 15:59:43,Mangaluru,Low,0.163
+2026-10-02 16:17:41,Mangaluru,Low,0.163
+2026-10-02 17:17:21,Mangaluru,Medium,0.308
+2026-10-02 17:22:38,Mangaluru,Medium,0.308
+2026-10-02 17:34:36,Mangaluru,Medium,0.441
+2026-10-02 22:16:35,Mangaluru,Medium,0.505
+2026-10-02 22:17:24,Bengaluru,Low,0.008
+2026-10-02 22:38:05,Mangaluru,Medium,0.305
+2026-10-03 10:41:17,Mangaluru,Low,0.182

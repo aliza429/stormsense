@@ -114,9 +114,14 @@ def render_dashboard():
         st.caption("Switch on to load the last 24 hours of live weather.")
 
     # 5) Prediction log
-    st.subheader("Prediction log")
+  st.subheader("Prediction log")
     if os.path.exists("log.csv"):
         log = pd.read_csv("log.csv").iloc[::-1]
         st.dataframe(log, width="stretch", hide_index=True)
+    elif os.path.exists("sample_log.csv"):
+        log = pd.read_csv("sample_log.csv").iloc[::-1]
+        st.dataframe(log, width="stretch", hide_index=True)
+        st.caption("Sample entries from earlier checks. New checks appear here "
+                   "as you run them.")
     else:
         st.info("No checks yet. Run one on the Live Storm Risk tab.")
