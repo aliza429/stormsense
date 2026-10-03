@@ -79,8 +79,7 @@ def predict_features(feats):
 def make_reason(p, contrib, row):
     level = risk_level(p)
     if level == "Low":
-        calm = contrib.drop(labels=[f for f in contrib.index if "pressure" in f])
-        down = calm.sort_values().head(2).index
+        down = contrib.sort_values().head(2).index   
         parts = [PHRASES[f](row[f]) for f in down]
         return f"Risk is LOW because " + " and ".join(parts) + "."
     up = contrib.drop(labels=["temperature_2m"]).sort_values(ascending=False)
