@@ -38,10 +38,7 @@ def render_whatif(gauge, shap_chart):
                          key="wi_w")
         temp = st.slider("Temperature (°C)", 15, 40, 29, key="wi_t")
         rain = st.slider("Rainfall (mm/h)", 0.0, max_rain, 0.0, 0.5, key="wi_r")
-        with st.expander("More controls (optional)"):
-            hchg = st.slider("Humidity change over 3 hours (%)",
-                             -20, 30, 0, key="wi_hc")
-
+        hchg = 0
     gust = wind * gust_ratio
     feats = {
         "pressure_anomaly": pchg * slopes["pressure_anomaly"],
