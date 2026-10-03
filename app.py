@@ -16,10 +16,7 @@ st.caption("Predicting storms, explaining why. Educational prototype, "
            "not an official weather warning.")
 
 LOG = "log.csv"
-                {"range": [0, 30], "color": "#14352a"},
-                {"range": [30, 70], "color": "#3a2f10"},
-                {"range": [70, 100], "color": "#3d1a1a"},
-
+COLORS = {"Low": "#34c77b", "Medium": "#ffb020", "High": "#ff5c5c"}
 def gauge(prob, level):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
@@ -30,8 +27,9 @@ def gauge(prob, level):
             "axis": {"range": [0, 100]},
             "bar": {"color": COLORS[level]},
             "steps": [
-                  {"range": [30, 70], "color": "#fdf1d6"},
-                  {"range": [70, 100], "color": "#f9dede"},
+            {"range": [0, 30], "color": "#14352a"},
+            {"range": [30, 70], "color": "#3a2f10"},
+            {"range": [70, 100], "color": "#3d1a1a"},
             ],
         },
     ))
