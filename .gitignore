@@ -1,1 +1,6 @@
+venv/
 log.csv
+__pycache__/
+*.pyc
+train_output.txt
+shap_output.txt
