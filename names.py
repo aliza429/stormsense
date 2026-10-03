@@ -1,0 +1,14 @@
+FRIENDLY = {
+    "surface_pressure": "Pressure",
+    "relative_humidity_2m": "Humidity",
+    "wind_speed_10m": "Wind speed",
+    "temperature_2m": "Temperature",
+    "precipitation": "Rainfall now",
+    "wind_gusts_10m": "Wind gusts",
+    "pressure_change_3h": "Pressure change (3h)",
+    "pressure_change_6h": "Pressure change (6h)",
+    "pressure_change_12h": "Pressure change (12h)",
+    "humidity_change_3h": "Humidity change (3h)",
+    "rain_last_6h": "Rain (last 6h)",
+    "gust_max_6h": "Max gust (6h)",
+}
