@@ -8,8 +8,11 @@ from labels import make_labels, df as raw
 from features import FEATURES, add_features_all
 
 RAIN_MM, GUST_KMH = 4, 50
+baselines = (raw[raw["ts"] < "2025-01-01"]
+             .groupby("city")["surface_pressure"].mean().round(2).to_dict())
+json.dump(baselines, open("baselines.json", "w"), indent=2)
 
-data = make_labels(add_features_all(raw), RAIN_MM, GUST_KMH)
+data = make_labels(add_features_all(raw, baselines), RAIN_MM, GUST_KMH)
 data.to_csv("storm_data.csv", index=False)
 
 # time-based split: train on earlier years, test on 2025
@@ -23,6 +26,7 @@ model = XGBClassifier(
     n_estimators=300, max_depth=4, learning_rate=0.05,
     subsample=0.8, colsample_bytree=0.8,
     scale_pos_weight=spw, eval_metric="logloss", random_state=42,
+    monotone_constraints=(-1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, 0),
 )
 model.fit(X_train, y_train)
 

@@ -1,16 +1,18 @@
 import pandas as pd
 
 FEATURES = [
-    "surface_pressure", "relative_humidity_2m", "wind_speed_10m",
+    "pressure_anomaly", "relative_humidity_2m", "wind_speed_10m",
     "temperature_2m", "precipitation", "wind_gusts_10m",
     "pressure_change_3h", "pressure_change_6h", "pressure_change_12h",
     "humidity_change_3h", "rain_last_6h", "gust_max_6h",
 ]
 
 
-def add_features(df):
-    """df: hourly rows for ONE city, sorted by time."""
+def add_features(df, baseline):
+    """df: hourly rows for ONE city, sorted by time.
+    baseline: that city's normal surface pressure (hPa)."""
     df = df.sort_values("ts").copy()
+    df["pressure_anomaly"] = df["surface_pressure"] - baseline
     df["pressure_change_3h"] = df["surface_pressure"].diff(3)
     df["pressure_change_6h"] = df["surface_pressure"].diff(6)
     df["pressure_change_12h"] = df["surface_pressure"].diff(12)
@@ -20,5 +22,6 @@ def add_features(df):
     return df
 
 
-def add_features_all(raw):
-    return pd.concat([add_features(g) for _, g in raw.groupby("city")])
+def add_features_all(raw, baselines):
+    return pd.concat([add_features(g, baselines[city])
+                      for city, g in raw.groupby("city")])

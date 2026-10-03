@@ -1,3 +1,4 @@
+import json
 import joblib
 import numpy as np
 import pandas as pd
@@ -12,7 +13,7 @@ CITIES = {
 }
 VARS = ("surface_pressure,relative_humidity_2m,wind_speed_10m,"
         "temperature_2m,precipitation,wind_gusts_10m")
-
+BASELINES = json.load(open("baselines.json"))
 LOW_MAX, MED_MAX = 0.30, 0.60   # probability cut-offs for Low / Medium / High
 
 _bundle = joblib.load("model.pkl")
@@ -28,7 +29,7 @@ PHRASES = {
     "relative_humidity_2m": lambda v: f"humidity is {v:.0f}%",
     "humidity_change_3h":  lambda v: f"humidity changed {v:+.0f}% in 3 hours",
     "temperature_2m":      lambda v: f"temperature is {v:.0f}°C",
-    "surface_pressure":    lambda v: f"pressure is {v:.0f} hPa",
+    "pressure_anomaly":    lambda v: f"pressure is {v:+.1f} hPa versus normal",
     "pressure_change_3h":  lambda v: f"pressure changed {v:+.1f} hPa in 3 hours",
     "pressure_change_6h":  lambda v: f"pressure changed {v:+.1f} hPa in 6 hours",
     "pressure_change_12h": lambda v: f"pressure changed {v:+.1f} hPa in 12 hours",
@@ -51,7 +52,7 @@ def fetch_live(city):
     df = pd.DataFrame(r.json()["hourly"]).rename(columns={"time": "ts"})
     df["ts"] = pd.to_datetime(df["ts"])
     df["city"] = city
-    df = add_features(df).dropna(subset=FEATURES)
+    df = add_features(df, BASELINES[city]).dropna(subset=FEATURES)
     return df  # the last row is the current hour
 
 

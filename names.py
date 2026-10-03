@@ -11,4 +11,5 @@ FRIENDLY = {
     "humidity_change_3h": "Humidity change (3h)",
     "rain_last_6h": "Rain (last 6h)",
     "gust_max_6h": "Max gust (6h)",
+    "pressure_anomaly": "Pressure vs normal",
 }
