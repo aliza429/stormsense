@@ -114,7 +114,7 @@ def render_dashboard():
         st.caption("Switch on to load the last 24 hours of live weather.")
 
     # 5) Prediction log
-  st.subheader("Prediction log")
+    st.subheader("Prediction log")
     if os.path.exists("log.csv"):
         log = pd.read_csv("log.csv").iloc[::-1]
         st.dataframe(log, width="stretch", hide_index=True)
