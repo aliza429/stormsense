@@ -1,4 +1,4 @@
-import json
+ximport json
 import joblib
 import numpy as np
 import pandas as pd
@@ -84,7 +84,7 @@ def make_reason(p, contrib, row):
         parts = [PHRASES[f](row[f]) for f in down]
         return f"Risk is LOW because " + " and ".join(parts) + "."
     up = contrib.drop(labels=["temperature_2m"]).sort_values(ascending=False)
-    up = up[up > 0].head(3).index
+    up = up[up > 0.15].head(3).index
     parts = [PHRASES[f](row[f]) for f in up]
     if len(parts) > 1:
         text = ", ".join(parts[:-1]) + " and " + parts[-1]

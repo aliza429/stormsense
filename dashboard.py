@@ -18,6 +18,8 @@ def load_labels():
 @st.cache_data(ttl=600)
 def load_recent(city):
     return fetch_live(city)
+
+
 def trend_chart(df, col, title, fixed_range=None, zero=False):
     fig = go.Figure(go.Scatter(x=df.index, y=df[col], mode="lines",
                                line=dict(color="#3b7dd8")))
@@ -28,6 +30,7 @@ def trend_chart(df, col, title, fixed_range=None, zero=False):
     if zero:
         fig.update_yaxes(rangemode="tozero")
     return fig
+
 
 def render_dashboard():
     metrics = json.load(open("metrics.json"))
@@ -45,8 +48,9 @@ def render_dashboard():
     st.caption(f"A storm hour = rain of at least {metrics['rain_mm']} mm/h or gusts "
                f"of at least {metrics['gust_kmh']} km/h within the next 6 hours. "
                "Mangaluru and Bengaluru, 2022-2025.")
-     counts = (labels.assign(storm=labels["storm_next_6h"].astype(int))
-              .groupby("city")["storm"].agg(["sum", "count"]))
+
+    labels = labels.assign(storm=labels["storm_next_6h"].astype(int))
+    counts = labels.groupby("city")["storm"].agg(["sum", "count"])
     fig0 = go.Figure()
     fig0.add_bar(name="Non-storm hours", x=counts.index,
                  y=counts["count"] - counts["sum"], marker_color="#9db8e0")
@@ -94,7 +98,8 @@ def render_dashboard():
         try:
             df = load_recent(city).set_index("ts")
             a, b = st.columns(2)
-            a.plotly_chart(trend_chart(df, "surface_pressure", "Pressure (hPa)"),
+            a.plotly_chart(trend_chart(df, "pressure_anomaly",
+                                       "Pressure vs normal (hPa)"),
                            width="stretch")
             b.plotly_chart(trend_chart(df, "relative_humidity_2m", "Humidity (%)",
                                        fixed_range=[0, 100]), width="stretch")

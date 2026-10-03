@@ -78,16 +78,20 @@ with tab1:
         c1, c2 = st.columns(2)
         with c1:
             st.plotly_chart(gauge(res["probability"], res["level"]),
-                            width='stretch')
+                            width="stretch")
         with c2:
             st.subheader("Why this prediction?")
             st.pyplot(shap_chart(res["contrib"]))
         st.info(res["reason"])
-         st.caption(f"In our 2025 test data, a {res['level']} reading was "
-                     f"followed by a storm within 6 hours about "
-                     f"{LEVEL_HIT_RATE[res['level']]:.0%} of the time.")
+        st.caption("The percentage is the model's storm risk score for the next "
+                   "6 hours (heavy rain or strong gusts). It is not a calibrated "
+                   "probability.")
+        st.caption(f"In our 2025 test data, a {res['level']} reading was "
+                   f"followed by a storm within 6 hours about "
+                   f"{LEVEL_HIT_RATE[res['level']]:.0%} of the time.")
+
 with tab2:
     st.write("Coming next.")
 
 with tab3:
-      render_dashboard()
+    render_dashboard()
