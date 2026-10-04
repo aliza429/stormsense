@@ -1,3 +1,5 @@
+from alerts import render_alert
+from riskmap import render_riskmap
 from whatif import render_whatif
 import os
 from datetime import datetime
@@ -64,8 +66,7 @@ def log_check(res):
     row.to_csv(LOG, mode="a", header=not os.path.exists(LOG), index=False)
 
 
-tab1, tab2, tab3 = st.tabs(["Live Storm Risk", "What-If Simulator", "Dashboard"])
-
+tab1, tab_map, tab2, tab3 = st.tabs(["Live Storm Risk", "Risk Map", "What-If Simulator", "Dashboard"])
 with tab1:
     city = st.selectbox("Location", list(CITIES), key="city")
     if st.button("Check storm risk", type="primary"):
@@ -87,7 +88,7 @@ with tab1:
         with c2:
             st.subheader("Why this prediction?")
             st.pyplot(shap_chart(res["contrib"]))
-        st.info(res["reason"])
+        render_alert(res)
         st.caption("The percentage is the model's storm risk score for the next "
                    "6 hours (heavy rain or strong gusts). It is not a calibrated "
                    "probability.")
@@ -96,6 +97,8 @@ with tab1:
                    f"{LEVEL_HIT_RATE[res['level']]:.0%} of the time.")
 
 with tab2:
-      render_whatif(gauge, shap_chart)
+    render_whatif(gauge, shap_chart)
 with tab3:
     render_dashboard()
+with tab_map:
+    render_riskmap()
